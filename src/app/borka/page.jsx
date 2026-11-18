@@ -1,11 +1,9 @@
 // src/app/borka/page.jsx
-
-// ১. পেজের নাম দিন (বড় হাতের অক্ষর দিয়ে শুরু)
 export default function BorkaPage() {
   return (
-    <div>
-      <h1>Borka Collection</h1>
-      {/* আপনার ডিজাইন এখানে */}
+    <div className="max-w-7xl mx-auto px-4 py-12">
+      <h1 className="text-3xl font-bold">Borka Collection</h1>
+      <p className="mt-2 text-gray-600">শীঘ্রই আসছে...</p>
     </div>
   );
 }
