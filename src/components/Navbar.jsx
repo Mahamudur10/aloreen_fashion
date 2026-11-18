@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import CartButton from "./CartButton";
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-  const [cartCount] = useState(0);   // পরে cart state দিয়ে replace করবেন
-  const [wishlistCount] = useState(0);
+  const [wishlistCount] = useState(0); // পরে wishlist state দিয়ে replace করবেন
 
   const categories = [
     { href: "/saree", label: "Saree" },
@@ -22,15 +22,15 @@ export default function Navbar() {
   return (
     <>
       {/* Announcement Bar */}
-      <div className="bg-rose-700 text-white text-center text-xs sm:text-sm py-2 px-4">
+      <div className="bg-rose-700 px-4 py-2 text-center text-xs text-white sm:text-sm">
         🚚 সারা বাংলাদেশে ফ্রি ডেলিভারি — অর্ডার করুন ২০০০৳ এর উপরে!
       </div>
 
       <header className="sticky top-0 z-50 w-full border-b border-rose-100 bg-white/90 backdrop-blur-md">
         <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 shrink-0">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-rose-700 text-white font-serif text-lg font-bold">
+          <Link href="/" className="flex shrink-0 items-center gap-2">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-rose-700 font-serif text-lg font-bold text-white">
               A
             </span>
             <div className="leading-tight">
@@ -113,7 +113,7 @@ export default function Navbar() {
           </ul>
 
           {/* Search (desktop) */}
-          <div className="hidden flex-1 max-w-xs items-center md:flex">
+          <div className="hidden max-w-xs flex-1 items-center md:flex">
             <div className="relative w-full">
               <input
                 type="text"
@@ -160,38 +160,14 @@ export default function Navbar() {
                 />
               </svg>
               {wishlistCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-rose-700 text-[10px] font-bold text-white">
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-rose-700 text-[10px] font-bold text-white">
                   {wishlistCount}
                 </span>
               )}
             </Link>
 
-            {/* Cart */}
-            <Link
-              href="/cart"
-              className="relative rounded-full p-2 text-gray-700 hover:bg-rose-50 hover:text-rose-700"
-              aria-label="Cart"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                />
-              </svg>
-              {cartCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-rose-700 text-[10px] font-bold text-white">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
+            {/* Cart — drawer trigger */}
+            <CartButton />
 
             {/* Account (desktop) */}
             <Link

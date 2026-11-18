@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import CategoryHero from "@/components/CategoryHero";
 import CategoryContent from "@/components/CategoryContent";
 
@@ -57,7 +58,8 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function CategoryPage({ params }) {
+// ✅ নতুন: child component যা params পড়বে (Suspense-এর ভিতরে)
+async function CategoryPageContent({ params }) {
   const { category } = await params;
   const meta = categoryMeta[category];
 
@@ -68,7 +70,7 @@ export default async function CategoryPage({ params }) {
   const products = allProducts.filter((p) => p.category === category);
 
   return (
-    <div>
+    <>
       <CategoryHero
         title={meta.title}
         subtitle={meta.subtitle}
@@ -76,6 +78,38 @@ export default async function CategoryPage({ params }) {
         productCount={products.length}
       />
       <CategoryContent products={products} />
+    </>
+  );
+}
+
+// ✅ মূল page এখন Suspense দিয়ে wrap করা
+export default function CategoryPage({ params }) {
+  return (
+    <Suspense fallback={<CategoryPageSkeleton />}>
+      <CategoryPageContent params={params} />
+    </Suspense>
+  );
+}
+
+// ✅ Loading skeleton
+function CategoryPageSkeleton() {
+  return (
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="animate-pulse">
+        <div className="h-4 w-32 rounded bg-gray-200"></div>
+        <div className="mt-6 h-10 w-64 rounded bg-gray-200"></div>
+        <div className="mt-3 h-4 w-96 rounded bg-gray-200"></div>
+      </div>
+      <div className="mt-12 grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
+        {[...Array(8)].map((_, i) => (
+          <div key={i} className="animate-pulse">
+            <div className="aspect-[4/5] rounded-2xl bg-gray-200"></div>
+            <div className="mt-3 h-3 w-16 rounded bg-gray-200"></div>
+            <div className="mt-2 h-4 w-full rounded bg-gray-200"></div>
+            <div className="mt-2 h-4 w-20 rounded bg-gray-200"></div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
